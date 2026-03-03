@@ -1,37 +1,44 @@
 # Regulatory Analysis Workbench (Compliance Copilot)
 
-This is a small project born out of a personal need to have a simple tool to use an LLM with confidential PDFs.
-With this, I wanted to experiment with the concepts of Agentic RAG and a Hybrid Retrieval Engine, using a local LLM to achieve a fully private system.
-The result is this, an Agentic-RAG system designed for compliance and regulatory risk analysis. It automates the process of extracting, searching, and analyzing complex regulatory documents (like DORA or MiCA) with high precision and transparency.
+This project started as a personal experiment: I wanted a simple way to work with large regulatory PDFs using a language model, while keeping full control over privacy and system behavior.
+
+The result is a prototype that explores Agentic RAG and hybrid retrieval techniques in the context of regulatory and compliance analysis. It is not intended as a finished product, but as a technical exploration of how structured retrieval, tool use, and transparent reasoning can be combined to analyze complex legal texts such as DORA or MiCA.
+
+The system focuses on traceability, structured document understanding, and reproducible analysis rather than marketing-style “AI automation”.
 
 ## Live Demo
 
-You can try the live demo here:
-👉 <DEMO_LINK>
+You can try the current cloud demo here:
 
-⚠️ Please be patient when using the demo.
-The system is deployed on Render Free Tier, which may introduce cold starts and slower response times, especially after periods of inactivity. Initial requests can take several seconds while services wake up.
+http://34.23.110.197:8501/
 
-## Key Functionalities
+The demo is temporarily exposed via public IP.
+DNS and HTTPS configuration are in progress.
 
-- **Intelligent Document Ingestion**: Supports PDF and DOCX formats. It performs Stateful Chunking to robustly link article numbers with their titles even across different paragraphs.
-- **Agentic Reasoning**: Powered by a sophisticated agent loop that uses specialized tools to gather evidence, explore context, and synthesize technical answers.
-- **Hybrid Retrieval Engine**: Combines Dense Retrieval (BGE-M3 embeddings) with Sparse Retrieval (BM25) using Reciprocal Rank Fusion (RRF) for maximum accuracy on both semantic and keyword-based queries.
-- **Verified Citations**: Automatically extracts exact article numbers, titles, and physical page numbers from the document to provide ironclad evidence for every claim.
-- **Technical Transparency**: Displays the full Chain of Thought (CoT), including detailed logs of every tool call (arguments and results) and the agent's internal reasoning.
-- **Document Mapping**: Generates an automatic outline (Table of Contents) of the document to help the agent orient itself during the analysis.
-- **Anti-Loop & Robustness**: Includes mechanisms to prevent repetitive tool calls and advanced JSON extraction logic to handle various LLM response styles.
+The original privacy-first version (fully local, no external APIs) remains the main conceptual reference of the project.
+
+## What This Prototype Explores
+
+- Document ingestion for PDF and DOCX files, including rule-based chunking that preserves structural metadata such as article and chapter references.
+- An agent loop that uses explicit tools to search, retrieve, and synthesize information instead of relying on a single prompt.
+- Hybrid retrieval combining semantic search and keyword-based ranking to improve recall and precision.
+- Structured citation extraction to link answers to specific articles, titles, and page references.
+- Basic safeguards against repeated tool calls and malformed LLM outputs.
+- A transparent workflow that exposes intermediate steps for inspection during development.
 
 ## Technical Stack & Techniques
 
 - **Backend**: Python with FastAPI.
-- **Frontend**: Streamlit for a simple, rich and interactive user interface.
+- **Frontend**: Streamlit.
 - **Vector Store**: ChromaDB for persistent and scalable storage of document chunks and embeddings.
-- **LLM Integration**: OpenAI-compatible API (via LM Studio), supporting models like DeepSeek-R1-Distill-14B, Qwen-2.5, and Llama-3.1.
-- **Embeddings**: BGE-M3 for state-of-the-art multilingual semantic representation.
-- **Hybrid Search**: BM25Okapi for keyword matching combined with vector search via RRF.
+- **LLM access**: Local mode using an OpenAI-compatible endpoint (e.g., LM Studio). Cloud demo mode using external APIs (Groq and Hugging Face).
+- **Embeddings**: Sentence-transformers multilingual models.
+- **Retrieval**: Hybrid Search, Dense retrieval via embeddings plus Sparse retrieval (BM25) and Reciprocal Rank Fusion for result merging
 - **Chunking Strategy**: Rule-based segmentation with metadata propagation (article/chapter tracking).
 - **Tool Calling**: Native tool-use implementation for recursive search and context exploration.
+- **Dependency** management: uv.
+- **Containerization and deployment**: Docker and Docker Compose.
+- **Cloud deployment (demo environment)**: Virtual machine on Google Cloud with CI/CD via GitHub Actions.
 
 ## Prerequisites
 
