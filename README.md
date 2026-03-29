@@ -10,7 +10,7 @@ The system focuses on traceability, structured document understanding, and repro
 
 You can try the current cloud demo here:
 
-http://34.73.220.209:8501/
+http://35.211.199.88:8501/
 
 The demo is temporarily exposed via public IP.
 DNS and HTTPS configuration are in progress.
